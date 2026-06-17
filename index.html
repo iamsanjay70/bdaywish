@@ -13,10 +13,11 @@
       justify-content: center;
       overflow: hidden;
       font-family: 'Trebuchet MS', sans-serif;
+      margin: 0;
     }
 
     .card {
-      background: rgba(255, 255, 255, 0.92);
+      background: rgba(255, 255, 255, 0.85);
       width: 85%;
       max-width: 550px;
       padding: 30px 25px;
@@ -100,7 +101,7 @@
     .heart {
       position: absolute;
       color: rgba(122, 60, 255, 0.35);
-      font-size: 22px;
+      font-size: 28px; /* bigger hearts */
       animation: float 6s linear infinite;
       z-index: 1;
     }
@@ -126,7 +127,6 @@
       100% { opacity: 0; transform: scale(0.6); }
     }
 
-    /* Music toggle button */
     .music-toggle {
       position: fixed;
       bottom: 20px;
@@ -146,6 +146,25 @@
     .music-toggle:hover {
       background: #5a2bcc;
       transform: scale(1.05);
+    }
+
+    /* Paw cursor follower */
+    @keyframes pawBounceRotate {
+      0% { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+      25% { transform: translate(-50%, -52%) rotate(-5deg) scale(1.05); }
+      50% { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+      75% { transform: translate(-50%, -48%) rotate(5deg) scale(1.05); }
+      100% { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+    }
+
+    .cursor-paw {
+      position: fixed;
+      pointer-events: none;
+      font-size: 3.2rem; /* larger paw */
+      opacity: 0.3;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+      animation: pawBounceRotate 2s ease-in-out infinite;
     }
   </style>
 </head>
@@ -173,22 +192,20 @@
     </div>
   </div>
 
-  <!-- Background music -->
   <audio id="bgMusic" loop>
     <source src="birthday_song.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
   </audio>
 
-  <!-- Music toggle button -->
   <button class="music-toggle" onclick="toggleMusic()">🎵 Play Music</button>
 
-  <!-- Confetti library -->
+  <div id="cursorPaw" class="cursor-paw">🐾</div>
+
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
   <script>
     function showMessage() {
       document.getElementById("surpriseMessage").style.display = "block";
-      // Confetti burst 🎉
       confetti({
         particleCount: 180,
         spread: 80,
@@ -203,7 +220,7 @@
       heart.innerHTML = Math.random() > 0.5 ? "💜" : "🐾";
       heart.style.left = Math.random() * 100 + "vw";
       heart.style.animationDuration = (4 + Math.random() * 3) + "s";
-      heart.style.fontSize = (16 + Math.random() * 18) + "px";
+      heart.style.fontSize = (28 + Math.random() * 12) + "px"; // bigger hearts
       document.body.appendChild(heart);
 
       setTimeout(() => {
@@ -213,7 +230,6 @@
 
     setInterval(createHeart, 600);
 
-    // Sparkles ✨
     function createSparkle() {
       const sparkle = document.createElement("div");
       sparkle.classList.add("sparkle");
@@ -230,7 +246,6 @@
 
     setInterval(createSparkle, 800);
 
-    // Music toggle function
     function toggleMusic() {
       const music = document.getElementById("bgMusic");
       const btn = document.querySelector(".music-toggle");
@@ -243,6 +258,31 @@
         btn.textContent = "🎵 Play Music";
       }
     }
+
+    // Paw follows cursor with glide effect
+    const cursorPaw = document.getElementById("cursorPaw");
+    let targetX = window.innerWidth / 2;
+    let targetY = window.innerHeight / 2;
+    let currentX = targetX;
+    let currentY = targetY;
+
+    document.addEventListener("mousemove", (e) => {
+      targetX = e.clientX;
+      targetY = e.clientY;
+    });
+
+    function animatePaw() {
+      // Smooth glide toward cursor
+      currentX += (targetX - currentX) * 0.1;
+      currentY += (targetY - currentY) * 0.1;
+
+      cursorPaw.style.left = currentX + "px";
+      cursorPaw.style.top = currentY + "px";
+
+      requestAnimationFrame(animatePaw);
+    }
+
+    animatePaw();
   </script>
 </body>
 </html>

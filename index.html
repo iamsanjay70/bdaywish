@@ -13,11 +13,12 @@
       justify-content: center;
       overflow: hidden;
       font-family: 'Trebuchet MS', sans-serif;
+      margin: 0;
     }
 
     .card {
       background: rgba(255, 255, 255, 0.92);
-      width: 85%;
+      width: 90%;
       max-width: 550px;
       padding: 30px 25px;
       border-radius: 20px;
@@ -147,6 +148,16 @@
       background: #5a2bcc;
       transform: scale(1.05);
     }
+
+    /* 📱 Mobile adjustments */
+    @media (max-width: 600px) {
+      h1 { font-size: 1.8rem; }
+      h2 { font-size: 1.1rem; }
+      p  { font-size: 0.95rem; }
+      .btn { font-size: 0.85rem; padding: 8px 18px; }
+      .heart { font-size: 16px; }
+      .sparkle { font-size: 14px; }
+    }
   </style>
 </head>
 <body>
@@ -175,7 +186,7 @@
 
   <!-- Background music -->
   <audio id="bgMusic" loop>
-    <source src="maayam_seidhaayo.mp3" type="audio/mpeg">
+    <source src="birthday_song.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
   </audio>
 

@@ -170,12 +170,26 @@
     #countdownScreen {
       position: fixed;
       inset: 0;
-      background: linear-gradient(135deg, #d6b6ff, #f0d6ff);
+      background:
+        radial-gradient(
+          circle at center 35%,
+          rgba(255, 220, 120, 0.35) 0%,
+          rgba(255, 180, 70, 0.15) 18%,
+          rgba(90, 45, 160, 0.08) 35%,
+          transparent 55%
+        ),
+      linear-gradient(
+        180deg,
+        #24123f 0%,
+        #1a1033 40%,
+        #12091f 100%
+      );
       display: flex;
       justify-content: center;
       align-items: center;
       z-index: 99999;
       transition: opacity 1s ease;
+      overflow: hidden;
     }
 
     .cake {
@@ -240,13 +254,35 @@
     }
 
     #countdown {
-     font-size: 4.5rem;
-     font-weight: bold;
-     color: white;
-     text-shadow:
-       0 0 10px rgba(255,255,255,0.8),
-       0 0 20px rgba(255,255,255,0.5);
-     }
+      font-size: 4.5rem;
+      font-weight: bold;
+      color: white;
+      text-shadow:
+        0 0 10px rgba(255,255,255,0.8),
+        0 0 20px rgba(255,255,255,0.5);
+    }
+
+    .cake::before {
+      content: "";
+      position: absolute;
+      top: -120px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 350px;
+      height: 350px;       
+      border-radius: 50%;
+
+      background: radial-gradient(
+        circle,
+        rgba(255, 220, 120, 0.45) 0%,
+        rgba(255, 180, 70, 0.25) 30%,
+        rgba(255, 180, 70, 0.08) 55%,
+        transparent 80%
+      );
+
+      filter: blur(30px);
+      pointer-events: none;
+    }
 
     .candles {
       position: absolute;
@@ -266,15 +302,28 @@
     }
 
     .flame {
-      width: 12px;
-      height: 18px;
-      background: gold;
+      width: 14px;
+      height: 22px;
+      background: radial-gradient(
+        circle at center,
+        #fff8c5 0%,
+        #ffd54f 35%,
+        #ff9800 70%,
+        #ff6f00 100%
+      );
+
       border-radius: 50%;
       position: absolute;
-      top: -18px;
-      left: 0;
+      top: -22px;
+      left: -1px;
+
+      box-shadow:
+        0 0 10px #ffd54f,
+        0 0 25px #ffb300,
+        0 0 45px #ff9800;
+
       transform-origin: bottom center;
-      animation: realisticFlame 0.25s infinite alternate;
+      animation: realisticFlame 0.18s infinite alternate;
     }
 
     @keyframes realisticFlame {

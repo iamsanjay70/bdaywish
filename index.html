@@ -204,14 +204,41 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
   <script>
+    let hasShownMessage = false;
+    let isTyping = false;
+
     function showMessage() {
-      document.getElementById("surpriseMessage").style.display = "block";
       confetti({
         particleCount: 180,
         spread: 80,
-        colors: ['#7a3cff', '#b084f5', '#ffffff'],
+        colors: ["#7a3cff", "#b084f5", "#ffffff"],
         origin: { y: 0.6 }
       });
+
+      // Message already displayed 
+      if (hasShownMessage || isTyping) return;
+
+      isTyping = true;
+
+      const msg = document.getElementById("surpriseMessage");
+      const text = "Honestly... you have a very special place in my heart. Happy Birthday once again. 💜🐾";
+
+
+      msg.style.display = "block"; 
+      msg.innerHTML = "";
+
+      let i = 0;
+
+      typingInterval = setInterval(() => {
+        msg.innerHTML += text.charAt(i);
+        i++;
+
+        if (i >= text.length) {
+          clearInterval(typingInterval);
+          isTyping = false; 
+          hasShownMessage = true;
+        }
+      }, 45);
     }
 
     function createHeart() {
@@ -269,6 +296,11 @@
     document.addEventListener("mousemove", (e) => {
       targetX = e.clientX;
       targetY = e.clientY;
+    });
+
+    document.addEventListener("touchmove", (e) => {
+      targetX = e.touches[0].clientX;
+      targetY = e.touches[0].clientY;
     });
 
     function animatePaw() {

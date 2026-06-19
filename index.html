@@ -408,22 +408,28 @@
       }
 
       @keyframes openLeft {
-        from {
-          transform: translateX(0);
-        }
-        to {
-          transform: translateX(-100%);
-        }
+      0% {
+        transform: scaleX(1);
+        transform-origin: left center;
       }
+      100% {
+        transform: scaleX(0);
+        transform-origin: left center;
+        opacity: 0.9; /* Keeps a small hint of fabric shadow at the edge */
+      }
+    }
 
-      @keyframes openRight {
-        from {
-          transform: translateX(0);
-        }
-        to {
-          transform: translateX(100%);
-        }
+    @keyframes openRight {
+      0% {
+        transform: scaleX(1);
+        transform-origin: right center;
       }
+      100% {
+        transform: scaleX(0);
+        transform-origin: right center;
+        opacity: 0.9;
+      }
+    }
   </style>
 </head>
 <body>

@@ -17,22 +17,58 @@
     }
 
     .card {
-      background: rgba(255, 255, 255, 0.85);
+      background: rgba(255, 255, 255, 0.72);
       width: 85%;
-      max-width: 550px;
+      max-width: 480px;
       padding: 30px 25px;
       border-radius: 20px;
       text-align: center;
       box-shadow: 0 0 25px rgba(122, 60, 255, 0.4);
-      position: relative;
       z-index: 2;
+      display: none;
       opacity: 0;
+      position: relative;
+      border: 2px solid rgba(122, 60, 255, 0.15);
+      outline: 1px solid rgba(122, 60, 255, 0.3);
+      outline-offset: -8px;
+    }
+
+    .card::before, .card::after {
+      content: "✧";
+      position: absolute;
+      color: rgba(122, 60, 255, 0.5);
+      font-size: 1.2rem;
+      animation: cornerPulse 2s ease-in-out infinite alternate;
+    }
+    .card::before { top: 12px; left: 15px; }
+    .card::after { bottom: 12px; right: 15px; }
+
+    @keyframes cornerPulse {
+      from { transform: scale(0.8); opacity: 0.4; }
+      to { transform: scale(1.2); opacity: 1; }
+    }
+
+    .card.active {
+      display: block;
+      opacity: 1;
+    }
+
+    #birthdayCard.active {
       animation: cardFadeIn 1.5s ease forwards, pulseGlow 4s ease-in-out infinite;
+    }
+
+    #meaningCard.active {
+      animation: fadeScaleIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     }
 
     @keyframes cardFadeIn {
       from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeScaleIn {
+      from { opacity: 0; transform: translateY(20px) scale(0.92); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
     @keyframes pulseGlow {
@@ -42,19 +78,19 @@
     }
 
     h1 {
-      font-size: 2.4rem;
+      font-size: 2.2rem;
       color: #7a3cff;
       margin-bottom: 12px;
     }
 
     h2 {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       color: #444;
       margin-bottom: 18px;
     }
 
     p {
-      font-size: 1rem;
+      font-size: 0.95rem;
       color: #555;
       line-height: 1.6;
       margin-bottom: 12px;
@@ -65,30 +101,59 @@
       font-weight: bold;
     }
 
-    .btn {
-      display: inline-block;
-      margin-top: 18px;
-      padding: 10px 22px;
+    .btn, .music-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 14px;
+      padding: 12px 22px;
       background: #7a3cff;
       color: white;
+      opacity: 1;
       text-decoration: none;
       border-radius: 999px;
-      transition: 0.3s;
+      transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
       cursor: pointer;
-      border: none;
-      font-size: 0.95rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 0.9rem;
+      font-weight: bold;
+      box-shadow: 0 4px 15px rgba(122, 60, 255, 0.4);
+      position: relative;
+      overflow: hidden;
     }
 
-    .btn:hover {
+    .btn .icon, .music-toggle .icon {
+      font-size: 1rem;
+      transition: transform 0.3s ease;
+    }
+
+    .btn:hover, .music-toggle:hover {
       background: #5a2bcc;
-      transform: scale(1.05);
-      box-shadow: 0 0 20px rgba(122, 60, 255, 0.7);
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 6px 20px rgba(122, 60, 255, 0.6);
+    }
+
+    .btn:hover .icon, .music-toggle:hover .icon {
+      transform: scale(1.2) rotate(6deg);
+    }
+
+    .btn-next {
+      margin-left: 6px;
+    }
+
+    .music-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      margin-top: 0;
+      z-index: 10;
     }
 
     .hidden-message {
       margin-top: 20px;
       display: none;
-      font-size: 1.05rem;
+      font-size: 1rem;
       color: #333;
       animation: fadeIn 1s ease;
     }
@@ -98,18 +163,132 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    .gift-box-wrapper {
+      margin: 20px auto;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .gift-box {
+      width: 150px;
+      height: 150px;
+      background: #7a3cff;
+      border-radius: 16px;
+      position: absolute;
+      cursor: pointer;
+      box-shadow: 0 12px 25px rgba(122, 60, 255, 0.35);
+      animation: teaserBounce 2.5s ease-in-out infinite;
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+      z-index: 5;
+    }
+
+    .gift-box::before {
+      content: "";
+      position: absolute;
+      top: -12px;
+      left: -6px;
+      width: 162px;
+      height: 32px;
+      background: #8b52ff;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .gift-box::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 65px;
+      width: 20px;
+      height: 100%;
+      background: #ffd700;
+      border-radius: 2px;
+    }
+
+    .gift-bow {
+      position: absolute;
+      top: -34px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2.6rem;
+      color: #ffd700;
+      z-index: 6;
+      text-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    }
+
+    .gift-box:hover {
+      transform: scale(1.06);
+    }
+
+    @keyframes teaserBounce {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      20% { transform: translateY(-20px) rotate(-6deg); }
+      30% { transform: translateY(-20px) rotate(6deg); }
+      40% { transform: translateY(0) rotate(-3deg); }
+      50% { transform: translateY(-10px) rotate(3deg); }
+      60% { transform: translateY(0) rotate(0deg); }
+    }
+
+    .gift-box.opened {
+      animation: none;
+      transform: scale(0.1);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .acrostic-container {
+      position: absolute;
+      text-align: left;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.98);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+
+    .acrostic-container.reveal {
+      visibility: visible;
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* Soft, calm staggered fade-in animations */
+    .acrostic-row {
+      font-size: 1.2rem;
+      margin: 6px 0;
+      color: #444;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+    }
+
+    .acrostic-container.reveal .acrostic-row {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .acrostic-letter {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: #7a3cff;
+      display: inline-block;
+      width: 24px;
+      text-shadow: 0 0 10px rgba(122, 60, 255, 0.2);
+    }
+
     .heart {
       position: absolute;
       color: rgba(122, 60, 255, 0.35);
-      font-size: 28px; /* bigger hearts */
-      animation: float 6s linear infinite;
+      animation: float 7s linear infinite;
       z-index: 1;
     }
 
     @keyframes float {
       0% { transform: translateY(100vh) scale(1); opacity: 0; }
       20% { opacity: 1; }
-      100% { transform: translateY(-20vh) scale(1.4); opacity: 0; }
+      100% { transform: translateY(-20vh) scale(1.3); opacity: 0; }
     }
 
     .sparkle {
@@ -127,28 +306,6 @@
       100% { opacity: 0; transform: scale(0.6); }
     }
 
-    .music-toggle {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #7a3cff;
-      color: white;
-      border: none;
-      border-radius: 999px;
-      padding: 10px 18px;
-      font-size: 0.9rem;
-      cursor: pointer;
-      box-shadow: 0 0 15px rgba(122, 60, 255, 0.5);
-      transition: 0.3s;
-      z-index: 10;
-    }
-
-    .music-toggle:hover {
-      background: #5a2bcc;
-      transform: scale(1.05);
-    }
-
-    /* Paw cursor follower */
     @keyframes pawBounceRotate {
       0% { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
       25% { transform: translate(-50%, -52%) rotate(-5deg) scale(1.05); }
@@ -160,7 +317,7 @@
     .cursor-paw {
       position: fixed;
       pointer-events: none;
-      font-size: 3.2rem; /* larger paw */
+      font-size: 3.2rem;
       opacity: 0.3;
       transform: translate(-50%, -50%);
       z-index: 9999;
@@ -200,12 +357,8 @@
     }
 
     @keyframes cakeFloat {
-      0%,100% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-10px);
-      }
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
     }
 
     .layer {
@@ -271,7 +424,6 @@
       width: 350px;
       height: 350px;       
       border-radius: 50%;
-
       background: radial-gradient(
         circle,
         rgba(255, 220, 120, 0.45) 0%,
@@ -279,14 +431,13 @@
         rgba(255, 180, 70, 0.08) 55%,
         transparent 80%
       );
-
       filter: blur(30px);
       pointer-events: none;
     }
 
     .candles {
       position: absolute;
-      bottom:265px;
+      bottom: 265px;
       width: 100%;
       display: flex;
       justify-content: center;
@@ -311,41 +462,21 @@
         #ff9800 70%,
         #ff6f00 100%
       );
-
       border-radius: 50%;
       position: absolute;
       top: -22px;
       left: -1px;
-
       box-shadow:
         0 0 10px #ffd54f,
         0 0 25px #ffb300,
         0 0 45px #ff9800;
-
       transform-origin: bottom center;
       animation: realisticFlame 0.18s infinite alternate;
     }
 
     @keyframes realisticFlame {
-      from {
-        transform: scale(1) rotate(-4deg);
-        opacity: 0.85;
-      }
-      to {
-        transform: scale(1.2) rotate(4deg);
-        opacity: 1;
-      }
-    }
-
-    @keyframes flicker {
-      from {
-        transform: scale(1);
-        opacity: 0.8;
-      }
-      to {
-        transform: scale(1.15);
-        opacity: 1;
-      }
+      from { transform: scale(1) rotate(-4deg); opacity: 0.85; }
+      to { transform: scale(1.2) rotate(4deg); opacity: 1; }
     }
 
     #curtainContainer {
@@ -362,13 +493,7 @@
       left: 0;
       width: 100%;
       height: 18px;
-
-      background: linear-gradient(
-        to bottom,
-        #f5e8ff,
-        #b084f5
-      );
-
+      background: linear-gradient(to bottom, #f5e8ff, #b084f5);
       z-index: 2;
     }
 
@@ -377,7 +502,6 @@
       top: 0;
       width: 50%;
       height: 100%;
-
       background:
         repeating-linear-gradient(
           90deg,
@@ -385,50 +509,24 @@
           #4c2282 20px,
           #240d42 40px
       );
-
       box-shadow:
         inset 0 0 40px rgba(0,0,0,0.6),
         inset 0 0 100px rgba(122, 60, 255, 0.3);
-      }
+    }
 
-      .curtain-left {
-        left: 0;
-      }
+    .curtain-left { left: 0; }
+    .curtain-right { right: 0; }
+    .open-left { animation: openLeft 2s ease-in-out forwards; }
+    .open-right { animation: openRight 2s ease-in-out forwards; }
 
-      .curtain-right {
-        right: 0;
-      }
-
-      .open-left {
-        animation: openLeft 2s ease-in-out forwards;
-      }
-
-      .open-right {
-        animation: openRight 2s ease-in-out forwards;
-      }
-
-      @keyframes openLeft {
-      0% {
-        transform: scaleX(1);
-        transform-origin: left center;
-      }
-      100% {
-        transform: scaleX(0);
-        transform-origin: left center;
-        opacity: 0.9; /* Keeps a small hint of fabric shadow at the edge */
-      }
+    @keyframes openLeft {
+      0% { transform: scaleX(1); transform-origin: left center; }
+      100% { transform: scaleX(0); transform-origin: left center; opacity: 0.9; }
     }
 
     @keyframes openRight {
-      0% {
-        transform: scaleX(1);
-        transform-origin: right center;
-      }
-      100% {
-        transform: scaleX(0);
-        transform-origin: right center;
-        opacity: 0.9;
-      }
+      0% { transform: scaleX(1); transform-origin: right center; }
+      100% { transform: scaleX(0); transform-origin: right center; opacity: 0.9; }
     }
   </style>
 </head>
@@ -451,37 +549,65 @@
         </div>
 
         <div class="layer top-layer"></div> 
-      
         <div class="layer middle-layer"> 
           <div id="countdown">3</div> 
         </div> 
-
         <div class="layer bottom-layer"></div>
       </div>
     </div>
   </div>
 
-  <div class="card">
+  <div class="card active" id="birthdayCard">
     <h1>Happy Birthday, Deepikka 💜</h1>
     <h2>You make every moment brighter</h2>
 
     <p>
       Wishing you a day filled with <span class="highlight">happiness, laughter, and love</span>.
     </p>
-
     <p>
       You are truly someone special, and I hope this year brings you everything you've been wishing for.
     </p>
-
     <p>
       Even Milo 🐶 sends his tail-wagging wishes for your special day!
     </p>
 
-    <button class="btn" onclick="showMessage()">Click for a surprise</button>
+    <button class="btn" onclick="showMessage()">
+      <span class="icon">🎁</span> Click for a surprise <span class="icon">✦</span>
+    </button>
+    <button class="btn btn-next" onclick="navigateToMeaning()">
+      What's in your name? <span class="icon">✨</span>
+    </button>
 
     <div class="hidden-message" id="surpriseMessage">
       Honestly... you have a very special place in my heart. Happy Birthday once again. 💜🐾
     </div>
+  </div>
+
+  <div class="card" id="meaningCard">
+    <h1>What "DEEPIKKA" Means ✨</h1>
+    <h2>To me, every single letter stands for something beautiful...</h2>
+
+    <div class="gift-box-wrapper">
+      <div class="gift-box" id="myGiftBox" onclick="revealAcrostic()">
+        <div class="gift-bow">🎀</div>
+      </div>
+
+      <div class="acrostic-container" id="acrosticContainer">
+        <div class="acrostic-row" style="transition-delay: 0.3s;"><span class="acrostic-letter">D</span>ivine</div>
+        <div class="acrostic-row" style="transition-delay: 0.45s;"><span class="acrostic-letter">E</span>ndearing</div>
+        <div class="acrostic-row" style="transition-delay: 0.6s;"><span class="acrostic-letter">E</span>legance</div>
+        <div class="acrostic-row" style="transition-delay: 0.75s;"><span class="acrostic-letter">P</span>recious</div>
+        <div class="acrostic-row" style="transition-delay: 0.9s;"><span class="acrostic-letter">I</span>ntoxicating</div>
+        <div class="acrostic-row" style="transition-delay: 1.05s;"><span class="acrostic-letter">K</span>ind-hearted</div>
+        <div class="acrostic-row" style="transition-delay: 1.2s;"><span class="acrostic-letter">K</span>eeper</div>
+        <div class="acrostic-row" style="transition-delay: 1.35s;"><span class="acrostic-letter">A</span>ngelic</div>
+      </div>
+    </div>
+
+    <p>You perfectly live up to your name every day. 💜</p>
+    <button class="btn" onclick="navigateToMain()">
+      <span class="icon">🐾</span> Go Back <span class="icon">✦</span>
+    </button>
   </div>
 
   <audio id="bgMusic" loop>
@@ -489,7 +615,9 @@
     Your browser does not support the audio element.
   </audio>
 
-  <button class="music-toggle" onclick="toggleMusic()">🎵 Play Music</button>
+  <button class="music-toggle" id="musicToggleBtn" onclick="toggleMusic()">
+    <span class="icon" id="musicIcon">🎵</span> <span id="musicText">Play Music</span>
+  </button>
 
   <div id="cursorPaw" class="cursor-paw">🐾</div>
 
@@ -507,18 +635,14 @@
         origin: { y: 0.6 }
       });
 
-      // Message already displayed 
       if (hasShownMessage || isTyping) return;
-
       isTyping = true;
 
       const msg = document.getElementById("surpriseMessage");
       const text = "Honestly... you have a very special place in my heart. Happy Birthday once again. 💜🐾";
 
-
       msg.style.display = "block"; 
       msg.innerHTML = "";
-
       let i = 0;
 
       typingInterval = setInterval(() => {
@@ -533,18 +657,46 @@
       }, 45);
     }
 
+    function navigateToMeaning() {
+      document.getElementById("birthdayCard").classList.remove("active");
+      document.getElementById("meaningCard").classList.add("active");
+      
+      document.getElementById("myGiftBox").classList.remove("opened");
+      document.getElementById("acrosticContainer").classList.remove("reveal");
+
+      confetti({
+        particleCount: 80,
+        spread: 60,
+        colors: ["#b084f5", "#ffffff"]
+      });
+    }
+
+    function revealAcrostic() {
+      document.getElementById("myGiftBox").classList.add("opened");
+      document.getElementById("acrosticContainer").classList.add("reveal");
+
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        colors: ["#ffd700", "#7a3cff", "#ffffff"]
+      });
+    }
+
+    function navigateToMain() {
+      document.getElementById("meaningCard").classList.remove("active");
+      document.getElementById("birthdayCard").classList.add("active");
+    }
+
     function createHeart() {
       const heart = document.createElement("div");
       heart.classList.add("heart");
       heart.innerHTML = Math.random() > 0.5 ? "💜" : "🐾";
       heart.style.left = Math.random() * 100 + "vw";
-      heart.style.animationDuration = (4 + Math.random() * 3) + "s";
-      heart.style.fontSize = (28 + Math.random() * 12) + "px"; // bigger hearts
+      heart.style.animationDuration = (5 + Math.random() * 3) + "s";
+      heart.style.fontSize = (42 + Math.random() * 18) + "px";
       document.body.appendChild(heart);
 
-      setTimeout(() => {
-        heart.remove();
-      }, 7000);
+      setTimeout(() => { heart.remove(); }, 8000);
     }
 
     setInterval(createHeart, 600);
@@ -558,27 +710,27 @@
       sparkle.style.animationDuration = (2 + Math.random() * 2) + "s";
       document.body.appendChild(sparkle);
 
-      setTimeout(() => {
-        sparkle.remove();
-      }, 4000);
+      setTimeout(() => { sparkle.remove(); }, 4000);
     }
 
     setInterval(createSparkle, 800);
 
     function toggleMusic() {
       const music = document.getElementById("bgMusic");
-      const btn = document.querySelector(".music-toggle");
+      const textSpan = document.getElementById("musicText");
+      const iconSpan = document.getElementById("musicIcon");
 
       if (music.paused) {
         music.play();
-        btn.textContent = "🔇 Stop Music";
+        textSpan.textContent = "Stop Music";
+        iconSpan.textContent = "🔇";
       } else {
         music.pause();
-        btn.textContent = "🎵 Play Music";
+        textSpan.textContent = "Play Music";
+        iconSpan.textContent = "🎵";
       }
     }
 
-    // Paw follows cursor with glide effect
     const cursorPaw = document.getElementById("cursorPaw");
     let targetX = window.innerWidth / 2;
     let targetY = window.innerHeight / 2;
@@ -596,20 +748,16 @@
     });
 
     function animatePaw() {
-      // Smooth glide toward cursor
       currentX += (targetX - currentX) * 0.1;
       currentY += (targetY - currentY) * 0.1;
-
       cursorPaw.style.left = currentX + "px";
       cursorPaw.style.top = currentY + "px";
-
       requestAnimationFrame(animatePaw);
     }
 
     animatePaw();
 
     let countdownValue = 3;
-
     const countdownElement = document.getElementById("countdown");
     const countdownScreen = document.getElementById("countdownScreen");
 
@@ -618,7 +766,6 @@
 
       if (countdownValue === 0) {
         countdownElement.textContent = "🎉";
-
         clearInterval(countdownTimer);
 
         setTimeout(() => {
@@ -626,7 +773,6 @@
           const rightCurtain = document.querySelector(".curtain-right");
 
           countdownScreen.style.display = "none";
-
           leftCurtain.classList.add("open-left");
           rightCurtain.classList.add("open-right");
 

@@ -14,6 +14,24 @@
       overflow: hidden;
       font-family: 'Trebuchet MS', sans-serif;
       margin: 0;
+      transition: background 1.5s ease;
+    }
+
+    /* Global Transition Wrapper for Card System */
+    .main-wrapper {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 1.2s ease, transform 1.2s ease;
+      opacity: 1;
+      z-index: 2;
+    }
+
+    .main-wrapper.fade-out {
+      opacity: 0;
+      transform: scale(0.95);
+      pointer-events: none;
     }
 
     .card {
@@ -24,7 +42,6 @@
       border-radius: 20px;
       text-align: center;
       box-shadow: 0 0 25px rgba(122, 60, 255, 0.4);
-      z-index: 2;
       display: none;
       opacity: 0;
       position: relative;
@@ -101,7 +118,7 @@
       font-weight: bold;
     }
 
-    .btn, .music-toggle {
+    .btn, .music-toggle, .mystery-btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -128,7 +145,7 @@
       transition: transform 0.3s ease;
     }
 
-    .btn:hover, .music-toggle:hover {
+    .btn:hover, .music-toggle:hover, .mystery-btn:hover {
       background: #5a2bcc;
       transform: translateY(-2px) scale(1.03);
       box-shadow: 0 6px 20px rgba(122, 60, 255, 0.6);
@@ -148,6 +165,33 @@
       right: 20px;
       margin-top: 0;
       z-index: 10;
+      transition: opacity 1s ease;
+    }
+
+    /* Mysterious Button styling */
+    .mystery-btn {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      margin-top: 0;
+      z-index: 10;
+      background: rgba(122, 60, 255, 0.3);
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(122, 60, 255, 0.4);
+      color: #5a1bcc;
+      box-shadow: 0 4px 15px rgba(122, 60, 255, 0.1);
+      transition: all 0.5s ease;
+    }
+    
+    .mystery-btn:hover {
+      background: #7a3cff;
+      color: white;
+    }
+
+    /* Class to lift the music button above the garden elements */
+    .music-toggle.above-garden {
+      z-index: 110;
+      opacity: 1 !important; /* Optional: keeps it fully visible over the dark garden */
     }
 
     .hidden-message {
@@ -240,49 +284,71 @@
     }
 
     .acrostic-container {
-      position: absolute;
-      text-align: left;
-      visibility: hidden;
-      opacity: 0;
-      transform: scale(0.98);
-      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-    }
+  position: absolute;
+  text-align: left;
+  visibility: hidden;
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
 
-    .acrostic-container.reveal {
-      visibility: visible;
-      opacity: 1;
-      transform: scale(1);
-    }
+.acrostic-container.reveal {
+  visibility: visible;
+  opacity: 1;
+  transform: scale(1);
+}
 
-    /* Soft, calm staggered fade-in animations */
-    .acrostic-row {
-      font-size: 1.2rem;
-      margin: 6px 0;
-      color: #444;
-      opacity: 0;
-      transform: translateY(8px);
-      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
-    }
+.acrostic-row {
+  font-size: 1.2rem;
+  margin: 8px 0;
+  color: #555;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.7s ease-out, transform 0.15s ease-out, font-size 0s, font-weight 0s, color 0s, text-shadow 0s;
+  cursor: default;
+}
 
-    .acrostic-container.reveal .acrostic-row {
-      opacity: 1;
-      transform: translateY(0);
-    }
+/* 1. Turns the entire word into a bright, bold gold instantly on hover */
+.acrostic-row:hover {
+  font-size: 1.35rem;      /* Enlarges the text */
+  font-weight: 900;        /* Extra bolded weight */
+  color: #ffd700;          /* Bright Vibrant Gold */
+  text-shadow: 
+    0 0 10px rgba(255, 215, 0, 0.8),
+    0 0 20px rgba(255, 165, 0, 0.4); /* Glowing golden illumination */
+  transform: translateX(8px);
+}
 
-    .acrostic-letter {
-      font-size: 1.6rem;
-      font-weight: 900;
-      color: #7a3cff;
-      display: inline-block;
-      width: 24px;
-      text-shadow: 0 0 10px rgba(122, 60, 255, 0.2);
-    }
+.acrostic-container.reveal .acrostic-row {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.acrostic-letter {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: #7a3cff;
+  display: inline-block;
+  width: 24px;
+  text-shadow: 0 0 10px rgba(122, 60, 255, 0.2);
+  transition: color 0s, text-shadow 0s, font-size 0.15s ease-out;
+}
+
+/* 2. Forces the first capital letter to perfectly match the bright gold glow instantly */
+.acrostic-row:hover .acrostic-letter {
+  font-size: 1.8rem;       /* Scales up nicely with the rest of the word */
+  color: #fff3a3;          /* Ultra-bright white-gold center for a neon effect */
+  text-shadow: 
+    0 0 12px rgba(255, 243, 163, 1),
+    0 0 25px rgba(255, 215, 0, 1);
+}
 
     .heart {
       position: absolute;
       color: rgba(122, 60, 255, 0.35);
       animation: float 7s linear infinite;
       z-index: 1;
+      transition: opacity 1s ease;
     }
 
     @keyframes float {
@@ -298,6 +364,7 @@
       opacity: 0;
       animation: twinkle 3s infinite;
       z-index: 0;
+      transition: opacity 1s ease;
     }
 
     @keyframes twinkle {
@@ -528,6 +595,268 @@
       0% { transform: scaleX(1); transform-origin: right center; }
       100% { transform: scaleX(0); transform-origin: right center; opacity: 0.9; }
     }
+
+    /* ==========================================================================
+       CSS BLOSSOMING FLOWERS AT MAGICAL NIGHT (by Md Usman Ansari) INTEGRATION
+       ========================================================================== */
+    #flowerGarden {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, #1b0933 0%, #08020f 100%);
+      z-index: 1;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1.5s ease;
+      overflow: hidden;
+    }
+
+    #flowerGarden.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .garden-back-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(8px);
+      color: #fff;
+    }
+    .garden-back-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Absolute system container allowing flowers to bundle naturally */
+    .flowers {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      bottom: 0;
+      z-index: 3;
+    }
+
+    .flower {
+      position: absolute;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transform-origin: bottom center;
+    }
+
+    /* Dynamic custom animations for organic, randomized wind reactions */
+    #flowerGarden.active .flower {
+      animation: flowerSway var(--sway-duration, 4s) ease-in-out infinite alternate;
+      animation-delay: var(--sway-delay, 0s);
+    }
+
+    .flower--1 { left: 32%; --scale: 0.75; height: 38vh; z-index: 3; --sway-duration: 3.5s; --sway-delay: -0.2s; --sway-amount: 3deg;  --stem-curve: -12deg; --stem-skew: -6deg; }
+    .flower--2 { left: 38%; --scale: 1.15; height: 58vh; z-index: 5; --sway-duration: 4.8s; --sway-delay: -1.5s; --sway-amount: 2.5deg; --stem-curve: -3deg;  --stem-skew: 3deg; }
+    .flower--3 { left: 45%; --scale: 0.88; height: 46vh; z-index: 2; --sway-duration: 4.1s; --sway-delay: -3.0s; --sway-amount: 3.5deg; --stem-curve: 4deg;   --stem-skew: -4deg; }
+    .flower--4 { left: 50%; --scale: 1.25; height: 65vh; z-index: 6; --sway-duration: 5.2s; --sway-delay: -0.8s; --sway-amount: 2deg;   --stem-curve: 8deg;   --stem-skew: 5deg; }
+    .flower--5 { left: 58%; --scale: 0.80; height: 41vh; z-index: 1; --sway-duration: 3.7s; --sway-delay: -2.2s; --sway-amount: 4deg;   --stem-curve: -6deg;  --stem-skew: -3deg; }
+    .flower--6 { left: 63%; --scale: 1.02; height: 52vh; z-index: 4; --sway-duration: 4.5s; --sway-delay: -1.1s; --sway-amount: 3deg;   --stem-curve: 14deg;  --stem-skew: 7deg; }
+
+    @keyframes flowerSway {
+      0% { transform: rotate(calc(var(--stem-curve) + var(--sway-amount))) scale(var(--scale, 1)); }
+      100% { transform: rotate(calc(var(--stem-curve) - var(--sway-amount))) scale(var(--scale, 1)); }
+    }
+
+    /* Green Stems configured with custom skew matrix transformations to eliminate stick stiffness */
+    /* Green Stems configured with custom skew matrix transformations to eliminate stick stiffness */
+    .flower__stem {
+      width: 8px; /* Slightly thicker for better curve visibility */
+      height: 100%;
+      background-image: linear-gradient(to top, #112d10, #1b4d18, #2e7d32, #4caf50);
+      /* This border-radius curves the stem slightly along its length */
+      border-radius: 50% 50% 0 0 / 10% 10% 0 0; 
+      transform: scaleY(0) skewX(var(--stem-skew, 0deg));
+      transform-origin: bottom center;
+      position: relative;
+      box-shadow: inset -2px 0 5px rgba(0, 0, 0, 0.3); /* Adds a 3D shadow effect */
+    }
+
+    #flowerGarden.active .flower__stem {
+      animation: growStem 3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    @keyframes growStem {
+      to { transform: scaleY(1) skewX(var(--stem-skew, 0deg)); }
+    }
+
+    /* Leaves Construction on Stem */
+    .flower__leaf {
+      position: absolute;
+      width: 45px;
+      height: 22px;
+      background: linear-gradient(to right, #2e7d32, #4caf50);
+      border-radius: 0 100px 0 100px;
+      opacity: 0;
+      transform: scale(0);
+    }
+    .flower__leaf--left {
+      left: calc(-1 * var(--leaf-w, 40px) + 4px);
+      transform-origin: right bottom;
+    }
+    .flower__leaf--right {
+      right: calc(-1 * var(--leaf-w, 40px) + 4px);
+      border-radius: 100px 0 100px 0;
+      transform-origin: left bottom;
+    }
+
+    #flowerGarden.active .flower__leaf {
+      animation: growLeaf 1.2s 1.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+    @keyframes growLeaf {
+      to { 
+        opacity: 0.95; 
+        transform: scale(var(--leaf-scale, 1)) rotate(var(--leaf-rot, 0deg)); 
+      }
+    }
+
+    /* HEAD CONTAINER: Placed at the exact top of the stem wrapper */
+    .flower__head {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 0;
+      height: 0;
+      /* Counteract the stem skew slightly so the head sits naturally upright relative to the bent top */
+      transform: translate(-50%, 0) skewX(calc(-1 * var(--stem-skew, 0deg)));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .flower__center {
+      width: 40px;
+      height: 40px;
+      background: #ffd700;
+      border-radius: 50%;
+      position: absolute;
+      z-index: 5;
+      box-shadow: 0 0 30px #ffd700, inset 0 0 10px #ff8c00;
+      transform: scale(0);
+    }
+
+    #flowerGarden.active .flower__center {
+      animation: pulseGlowFlower 2s infinite alternate, popCenter 1s 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes popCenter {
+      to { transform: scale(1); }
+    }
+
+    @keyframes pulseGlowFlower {
+      from { box-shadow: 0 0 20px #ffd700; }
+      to { box-shadow: 0 0 40px #ffaa00; }
+    }
+
+    /* Petals Arrangement and Blossom Reveal */
+    .flower__petals {
+      position: absolute;
+      width: 0;
+      height: 0;
+    }
+
+    .flower__petal {
+      position: absolute;
+      background-image: linear-gradient(to top, #7a3cff, #d6b6ff);
+      border-radius: 50% 50% 0 50%;
+      transform-origin: bottom right;
+      opacity: 0;
+      box-shadow: 0 0 15px rgba(122, 60, 255, 0.4);
+    }
+
+    /* Dynamic blossoming animations when active */
+    #flowerGarden.active .flower__petal--1 { animation: openPetal1 1.5s 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+    #flowerGarden.active .flower__petal--2 { animation: openPetal2 1.5s 1.9s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+    #flowerGarden.active .flower__petal--3 { animation: openPetal3 1.5s 2.0s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+    #flowerGarden.active .flower__petal--4 { animation: openPetal4 1.5s 2.1s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+    #flowerGarden.active .flower__petal--5 { animation: openPetal5 1.5s 2.2s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+    #flowerGarden.active .flower__petal--6 { animation: openPetal6 1.5s 2.3s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+
+    @keyframes openPetal1 { to { opacity: 0.85; width: 45px; height: 75px; transform: translate(-45px, -75px) rotate(0deg); } }
+    @keyframes openPetal2 { to { opacity: 0.85; width: 45px; height: 75px; transform: translate(-45px, -75px) rotate(60deg); } }
+    @keyframes openPetal3 { to { opacity: 0.85; width: 45px; height: 75px; transform: translate(-45px, -75px) rotate(120deg); } }
+    @keyframes openPetal4 { to { opacity: 0.85; width: 45px; height: 75px; transform: translate(-45px, -75px) rotate(180deg); } }
+    @keyframes openPetal5 { to { opacity: 0.85; width: 45px; height: 75px; transform: translate(-45px, -75px) rotate(240deg); } }
+    @keyframes openPetal6 { to { opacity: 0.85; width: 45px; height: 75px; transform: translate(-45px, -75px) rotate(300deg); } }
+
+    .flower--2 .flower__petal, .flower--5 .flower__petal { background-image: linear-gradient(to top, #9361ff, #f5e8ff); }
+    .flower--3 .flower__petal, .flower--6 .flower__petal { background-image: linear-gradient(to top, #b084f5, #ffffff); }
+
+    /* Grass Layer System Container (Updated to Lush Green Colors) */
+    .grass-container {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 45px;
+      display: flex;
+      align-items: flex-end;
+      z-index: 5;
+      pointer-events: none;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 1.5s 1s, transform 1.5s 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    #flowerGarden.active .grass-container {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .grass-blade {
+  width: 6px;
+  height: var(--blade-height, 40px);
+  background: var(--blade-color, linear-gradient(to top, #0c240a, #2e7d32));
+  border-radius: 50% 50% 0 0;
+  transform-origin: bottom center;
+  margin-left: -2px;
+  animation: grassWave var(--sway-duration, 3s) ease-in-out infinite;
+  animation-delay: var(--sway-delay, 0s);
+}
+
+@keyframes grassWave {
+  0%   { transform: rotate(var(--angle-start, -2deg)) skewX(-2deg) scaleY(1); }
+  25%  { transform: rotate(var(--angle-mid, 3deg)) skewX(2deg) scaleY(1.05); }
+  50%  { transform: rotate(var(--angle-end, -4deg)) skewX(-3deg) scaleY(1); }
+  75%  { transform: rotate(var(--angle-mid, 2deg)) skewX(1deg) scaleY(0.98); }
+  100% { transform: rotate(var(--angle-start, -2deg)) skewX(-2deg) scaleY(1); }
+}
+
+    /* Dynamic Night Lights */
+    .night-lights {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .light-particle {
+      position: absolute;
+      background: #ffd700;
+      border-radius: 50%;
+      animation: floatUp 8s infinite linear;
+      filter: blur(1px);
+      box-shadow: 0 0 10px #ffd700, 0 0 20px #ff9800;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(105vh) translateX(0) scale(0.5); opacity: 0; }
+      30% { opacity: 0.8; }
+      90% { opacity: 0.8; }
+      100% { transform: translateY(-10vh) translateX(50px) scale(1.2); opacity: 0; }
+    }
   </style>
 </head>
 <body>
@@ -557,63 +886,188 @@
     </div>
   </div>
 
-  <div class="card active" id="birthdayCard">
-    <h1>Happy Birthday, Deepikka 💜</h1>
-    <h2>You make every moment brighter</h2>
+  <div class="main-wrapper" id="mainWrapper">
+    <div class="card active" id="birthdayCard">
+      <h1>Happy Birthday, Deepikka 💜</h1>
+      <h2>You make every moment brighter</h2>
 
-    <p>
-      Wishing you a day filled with <span class="highlight">happiness, laughter, and love</span>.
-    </p>
-    <p>
-      You are truly someone special, and I hope this year brings you everything you've been wishing for.
-    </p>
-    <p>
-      Even Milo 🐶 sends his tail-wagging wishes for your special day!
-    </p>
+      <p>
+        Wishing you a day filled with <span class="highlight">happiness, laughter, and love</span>.
+      </p>
+      <p>
+        You are truly someone special, and I hope this year brings you everything you've been wishing for.
+      </p>
+      <p>
+        Even Milo 🐶 sends his tail-wagging wishes for your special day!
+      </p>
 
-    <button class="btn" onclick="showMessage()">
-      <span class="icon">🎁</span> Click for a surprise <span class="icon">✦</span>
-    </button>
-    <button class="btn btn-next" onclick="navigateToMeaning()">
-      What's in your name? <span class="icon">✨</span>
-    </button>
+      <button class="btn" onclick="showMessage()">
+        <span class="icon">🎁</span> Click for a surprise <span class="icon">✦</span>
+      </button>
+      <button class="btn btn-next" onclick="navigateToMeaning()">
+        What's in your name? <span class="icon">✨</span>
+      </button>
 
-    <div class="hidden-message" id="surpriseMessage">
-      Honestly... you have a very special place in my heart. Happy Birthday once again. 💜🐾
+      <div class="hidden-message" id="surpriseMessage">
+        Honestly... you have a very special place in my heart. Happy Birthday once again. 💜🐾
+      </div>
+    </div>
+
+    <div class="card" id="meaningCard">
+      <h1>What "DEEPIKKA" Means ✨</h1>
+      <h2>To me, every single letter stands for something beautiful...</h2>
+
+      <div class="gift-box-wrapper">
+        <div class="gift-box" id="myGiftBox" onclick="revealAcrostic()">
+          <div class="gift-bow">🎀</div>
+        </div>
+
+        <div class="acrostic-container" id="acrosticContainer">
+          <div class="acrostic-row" style="transition-delay: 0.3s;"><span class="acrostic-letter">D</span>ivine</div>
+          <div class="acrostic-row" style="transition-delay: 0.45s;"><span class="acrostic-letter">E</span>ndearing</div>
+          <div class="acrostic-row" style="transition-delay: 0.6s;"><span class="acrostic-letter">E</span>legance</div>
+          <div class="acrostic-row" style="transition-delay: 0.75s;"><span class="acrostic-letter">P</span>recious</div>
+          <div class="acrostic-row" style="transition-delay: 0.9s;"><span class="acrostic-letter">I</span>ntoxicating</div>
+          <div class="acrostic-row" style="transition-delay: 1.05s;"><span class="acrostic-letter">K</span>ind-hearted</div>
+          <div class="acrostic-row" style="transition-delay: 1.2s;"><span class="acrostic-letter">K</span>eeper</div>
+          <div class="acrostic-row" style="transition-delay: 1.35s;"><span class="acrostic-letter">A</span>ngelic</div>
+        </div>
+      </div>
+
+      <p>You perfectly live up to your name every day. 💜</p>
+      <button class="btn" onclick="navigateToMain()">
+        <span class="icon">🐾</span> Go Back <span class="icon">✦</span>
+      </button>
     </div>
   </div>
 
-  <div class="card" id="meaningCard">
-    <h1>What "DEEPIKKA" Means ✨</h1>
-    <h2>To me, every single letter stands for something beautiful...</h2>
-
-    <div class="gift-box-wrapper">
-      <div class="gift-box" id="myGiftBox" onclick="revealAcrostic()">
-        <div class="gift-bow">🎀</div>
+  <div id="flowerGarden">
+    <button class="btn garden-back-btn" onclick="closeGarden()">
+      ← Return Back 💜
+    </button>
+    <div class="night-lights" id="nightLightsContainer"></div>
+    
+    <div class="flowers">
+      <div class="flower flower--1">
+        <div class="flower__stem">
+          <div class="flower__head">
+            <div class="flower__center"></div>
+            <div class="flower__petals">
+              <div class="flower__petal flower__petal--1"></div>
+              <div class="flower__petal flower__petal--2"></div>
+              <div class="flower__petal flower__petal--3"></div>
+              <div class="flower__petal flower__petal--4"></div>
+              <div class="flower__petal flower__petal--5"></div>
+              <div class="flower__petal flower__petal--6"></div>
+            </div>
+          </div>
+          <div class="flower__leaf flower__leaf--left" style="top: 35%; --leaf-w: 42px; --leaf-scale: 0.9; --leaf-rot: 10deg;"></div>
+          <div class="flower__leaf flower__leaf--right" style="top: 58%; --leaf-w: 46px; --leaf-scale: 1.1; --leaf-rot: -5deg;"></div>
+        </div>
       </div>
 
-      <div class="acrostic-container" id="acrosticContainer">
-        <div class="acrostic-row" style="transition-delay: 0.3s;"><span class="acrostic-letter">D</span>ivine</div>
-        <div class="acrostic-row" style="transition-delay: 0.45s;"><span class="acrostic-letter">E</span>ndearing</div>
-        <div class="acrostic-row" style="transition-delay: 0.6s;"><span class="acrostic-letter">E</span>legance</div>
-        <div class="acrostic-row" style="transition-delay: 0.75s;"><span class="acrostic-letter">P</span>recious</div>
-        <div class="acrostic-row" style="transition-delay: 0.9s;"><span class="acrostic-letter">I</span>ntoxicating</div>
-        <div class="acrostic-row" style="transition-delay: 1.05s;"><span class="acrostic-letter">K</span>ind-hearted</div>
-        <div class="acrostic-row" style="transition-delay: 1.2s;"><span class="acrostic-letter">K</span>eeper</div>
-        <div class="acrostic-row" style="transition-delay: 1.35s;"><span class="acrostic-letter">A</span>ngelic</div>
+      <div class="flower flower--2">
+        <div class="flower__stem">
+          <div class="flower__head">
+            <div class="flower__center"></div>
+            <div class="flower__petals">
+              <div class="flower__petal flower__petal--1"></div>
+              <div class="flower__petal flower__petal--2"></div>
+              <div class="flower__petal flower__petal--3"></div>
+              <div class="flower__petal flower__petal--4"></div>
+              <div class="flower__petal flower__petal--5"></div>
+              <div class="flower__petal flower__petal--6"></div>
+            </div>
+          </div>
+          <div class="flower__leaf flower__leaf--left" style="top: 30%; --leaf-w: 52px; --leaf-scale: 1.3; --leaf-rot: -8deg;"></div>
+          <div class="flower__leaf flower__leaf--right" style="top: 55%; --leaf-w: 48px; --leaf-scale: 1.1; --leaf-rot: 12deg;"></div>
+        </div>
+      </div>
+
+      <div class="flower flower--3">
+        <div class="flower__stem">
+          <div class="flower__head">
+            <div class="flower__center"></div>
+            <div class="flower__petals">
+              <div class="flower__petal flower__petal--1"></div>
+              <div class="flower__petal flower__petal--2"></div>
+              <div class="flower__petal flower__petal--3"></div>
+              <div class="flower__petal flower__petal--4"></div>
+              <div class="flower__petal flower__petal--5"></div>
+              <div class="flower__petal flower__petal--6"></div>
+            </div>
+          </div>
+          <div class="flower__leaf flower__leaf--left" style="top: 45%; --leaf-w: 40px; --leaf-scale: 0.85; --leaf-rot: 5deg;"></div>
+          <div class="flower__leaf flower__leaf--right" style="top: 68%; --leaf-w: 44px; --leaf-scale: 1.0; --leaf-rot: -10deg;"></div>
+        </div>
+      </div>
+
+      <div class="flower flower--4">
+        <div class="flower__stem">
+          <div class="flower__head">
+            <div class="flower__center"></div>
+            <div class="flower__petals">
+              <div class="flower__petal flower__petal--1"></div>
+              <div class="flower__petal flower__petal--2"></div>
+              <div class="flower__petal flower__petal--3"></div>
+              <div class="flower__petal flower__petal--4"></div>
+              <div class="flower__petal flower__petal--5"></div>
+              <div class="flower__petal flower__petal--6"></div>
+            </div>
+          </div>
+          <div class="flower__leaf flower__leaf--left" style="top: 25%; --leaf-w: 55px; --leaf-scale: 1.4; --leaf-rot: -15deg;"></div>
+          <div class="flower__leaf flower__leaf--right" style="top: 52%; --leaf-w: 50px; --leaf-scale: 1.2; --leaf-rot: 8deg;"></div>
+        </div>
+      </div>
+
+      <div class="flower flower--5">
+        <div class="flower__stem">
+          <div class="flower__head">
+            <div class="flower__center"></div>
+            <div class="flower__petals">
+              <div class="flower__petal flower__petal--1"></div>
+              <div class="flower__petal flower__petal--2"></div>
+              <div class="flower__petal flower__petal--3"></div>
+              <div class="flower__petal flower__petal--4"></div>
+              <div class="flower__petal flower__petal--5"></div>
+              <div class="flower__petal flower__petal--6"></div>
+            </div>
+          </div>
+          <div class="flower__leaf flower__leaf--left" style="top: 40%; --leaf-w: 42px; --leaf-scale: 0.9; --leaf-rot: 12deg;"></div>
+          <div class="flower__leaf flower__leaf--right" style="top: 62%; --leaf-w: 45px; --leaf-scale: 1.05; --leaf-rot: -4deg;"></div>
+        </div>
+      </div>
+
+      <div class="flower flower--6">
+        <div class="flower__stem">
+          <div class="flower__head">
+            <div class="flower__center"></div>
+            <div class="flower__petals">
+              <div class="flower__petal flower__petal--1"></div>
+              <div class="flower__petal flower__petal--2"></div>
+              <div class="flower__petal flower__petal--3"></div>
+              <div class="flower__petal flower__petal--4"></div>
+              <div class="flower__petal flower__petal--5"></div>
+              <div class="flower__petal flower__petal--6"></div>
+            </div>
+          </div>
+          <div class="flower__leaf flower__leaf--left" style="top: 30%; --leaf-w: 52px; --leaf-scale: 1.3; --leaf-rot: -8deg;"></div>
+          <div class="flower__leaf flower__leaf--right" style="top: 55%; --leaf-w: 48px; --leaf-scale: 1.1; --leaf-rot: 12deg;"></div>
+        </div>
       </div>
     </div>
 
-    <p>You perfectly live up to your name every day. 💜</p>
-    <button class="btn" onclick="navigateToMain()">
-      <span class="icon">🐾</span> Go Back <span class="icon">✦</span>
-    </button>
+    <div class="grass-container" id="grassContainer"></div>
   </div>
 
   <audio id="bgMusic" loop>
     <source src="maayam_seidhaayo.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
   </audio>
+
+  <button class="mystery-btn" id="mysteryBtn" onclick="revealGarden()">
+    ✨ ? ✨
+  </button>
 
   <button class="music-toggle" id="musicToggleBtn" onclick="toggleMusic()">
     <span class="icon" id="musicIcon">🎵</span> <span id="musicText">Play Music</span>
@@ -626,6 +1080,7 @@
   <script>
     let hasShownMessage = false;
     let isTyping = false;
+    let backgroundEffectsPaused = false;
 
     function showMessage() {
       confetti({
@@ -687,7 +1142,9 @@
       document.getElementById("birthdayCard").classList.add("active");
     }
 
+    /* Background Aesthetic Loop Creators */
     function createHeart() {
+      if(backgroundEffectsPaused) return;
       const heart = document.createElement("div");
       heart.classList.add("heart");
       heart.innerHTML = Math.random() > 0.5 ? "💜" : "🐾";
@@ -698,10 +1155,10 @@
 
       setTimeout(() => { heart.remove(); }, 8000);
     }
-
     setInterval(createHeart, 600);
 
     function createSparkle() {
+      if(backgroundEffectsPaused) return;
       const sparkle = document.createElement("div");
       sparkle.classList.add("sparkle");
       sparkle.innerHTML = "✦";
@@ -712,9 +1169,9 @@
 
       setTimeout(() => { sparkle.remove(); }, 4000);
     }
-
     setInterval(createSparkle, 800);
 
+    /* Media Logic */
     function toggleMusic() {
       const music = document.getElementById("bgMusic");
       const textSpan = document.getElementById("musicText");
@@ -731,6 +1188,7 @@
       }
     }
 
+    /* Custom Input Cursor Coordinates tracking */
     const cursorPaw = document.getElementById("cursorPaw");
     let targetX = window.innerWidth / 2;
     let targetY = window.innerHeight / 2;
@@ -754,9 +1212,9 @@
       cursorPaw.style.top = currentY + "px";
       requestAnimationFrame(animatePaw);
     }
-
     animatePaw();
 
+    /* Transition Core Controller Out of Opening Cake screen */
     let countdownValue = 3;
     const countdownElement = document.getElementById("countdown");
     const countdownScreen = document.getElementById("countdownScreen");
@@ -792,6 +1250,83 @@
         countdownElement.textContent = countdownValue;
       }
     }, 1000);
+
+    /* ==========================================================================
+       TRANSITIONAL LOGIC FOR MAGICAL NIGHT GARDEN REVEAL
+       ========================================================================== */
+    function revealGarden() {
+      backgroundEffectsPaused = true;
+      
+      document.querySelectorAll('.heart, .sparkle').forEach(el => el.style.opacity = '0');
+      setTimeout(() => {
+        document.querySelectorAll('.heart, .sparkle').forEach(el => el.remove());
+      }, 1000);
+
+      document.getElementById("mainWrapper").classList.add("fade-out");
+      document.getElementById("mysteryBtn").style.opacity = "0";
+      document.getElementById("mysteryBtn").style.pointerEvents = "none";
+      
+      // Look here: Add the class to lift the button
+      const musicBtn = document.getElementById("musicToggleBtn");
+      musicBtn.classList.add("above-garden");
+
+      document.getElementById("flowerGarden").classList.add("active");
+    }
+
+    function closeGarden() {
+      document.getElementById("flowerGarden").classList.remove("active");
+
+      document.getElementById("mainWrapper").classList.remove("fade-out");
+      document.getElementById("mysteryBtn").style.opacity = "1";
+      document.getElementById("mysteryBtn").style.pointerEvents = "all";
+      
+      // Look here: Remove the class to return it to its normal state
+      const musicBtn = document.getElementById("musicToggleBtn");
+      musicBtn.classList.remove("above-garden");
+
+      backgroundEffectsPaused = false;
+    }
+
+    // Generate Ambient Firefly/Light particles inside the flower garden dynamically
+    const lightsContainer = document.getElementById("nightLightsContainer");
+    for (let index = 0; index < 50; index++) {
+      const light = document.createElement("div");
+      light.classList.add("light-particle");
+      light.style.left = Math.random() * 100 + "vw";
+      light.style.top = Math.random() * 20 + 60 + "vh";
+      light.style.animationDelay = (Math.random() * -8) + "s";
+      light.style.animationDuration = (6 + Math.random() * 4) + "s";
+      light.style.width = light.style.height = (4 + Math.random() * 6) + "px";
+      lightsContainer.appendChild(light);
+    }
+
+    // Generate dense realistic swaying Grass Blades dynamically along bottom landscape
+    const grassContainer = document.getElementById("grassContainer");
+const bladeCount = Math.floor(window.innerWidth / 4);
+
+for (let i = 0; i < bladeCount; i++) {
+  const blade = document.createElement("div");
+  blade.classList.add("grass-blade");
+
+  // Random height
+  blade.style.setProperty("--blade-height", (28 + Math.random() * 25) + "px");
+
+  // Random color variation
+  blade.style.setProperty("--blade-color", Math.random() > 0.5 
+    ? "linear-gradient(to top, #11330e, #4caf50)" 
+    : "linear-gradient(to top, #0c240a, #2e7d32)");
+
+  // Random sway timing
+  blade.style.setProperty("--sway-duration", (2.5 + Math.random() * 2.5) + "s");
+  blade.style.setProperty("--sway-delay", (Math.random() * -3) + "s");
+
+  // Random sway angles
+  blade.style.setProperty("--angle-start", (-2 - Math.random() * 3) + "deg");
+  blade.style.setProperty("--angle-mid", (2 + Math.random() * 3) + "deg");
+  blade.style.setProperty("--angle-end", (-3 - Math.random() * 4) + "deg");
+
+  grassContainer.appendChild(blade);
+}
   </script>
 </body>
 </html>

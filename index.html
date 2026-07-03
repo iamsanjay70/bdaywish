@@ -298,47 +298,46 @@
   transform: scale(1);
 }
 
-/* 1. FIXED FADING: Changed base opacity to 1 so words are perfectly solid when revealed */
 .acrostic-row {
   font-size: 1.2rem;
   margin: 8px 0;
-  color: #444444; /* Clean, solid dark grey/black base color */
+  color: #444444; /* Clean, highly-readable dark grey base color */
+  font-weight: normal; 
   opacity: 1; 
   transform: translateY(0);
   cursor: pointer;
-  /* 2. UNIFIED TIMING: Everything across the row transitions together over 0.25 seconds */
+  /* Smoothly transition all properties simultaneously */
   transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* Hover effect targets the entire line simultaneously */
-.acrostic-row:hover {
-  font-size: 1.35rem;
-  font-weight: 900;
-  color: #ffd700; /* Turns the whole word brilliant gold */
-  transform: translateX(10px);
-  text-shadow: 
-    0 0 10px rgba(255, 215, 0, 0.8),
-    0 0 20px rgba(122, 60, 255, 0.4);
-}
-
-/* Base style for the leading capital letter */
+/* Base style for the leading letter: BOLD and PURPLE */
 .acrostic-letter {
   font-size: 1.6rem;
-  font-weight: 900;
-  color: #7a3cff; /* Vibrant purple signature */
+  font-weight: bold; /* Bold by default */
+  color: #7a3cff;    /* Signature vibrant purple color */
   display: inline-block;
   width: 24px;
-  /* Matches the row's transition perfectly so they trigger together */
   transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* 3. SIMULTANEOUS ACTION: The first letter changes color instantly alongside the rest of the row */
-.acrostic-row:hover .acrostic-letter {
-  font-size: 1.8rem;
-  color: #fff3a3; /* White-gold core pops at the exact same time */
+/* HOVER EFFECT: Entire row becomes bold, shifts slightly, and glows safely */
+.acrostic-row:hover {
+  font-weight: bold; /* Turns the remaining text bold on hover */
+  color: #444444;    /* Keeps original high contrast base text color for maximum visibility */
+  transform: translateX(10px);
+  /* Elegant, soft drop-glow that doesn't blind or overlap the text letters */
   text-shadow: 
-    0 0 12px rgba(255, 243, 163, 1),
-    0 0 25px rgba(255, 215, 0, 1);
+    0 0 8px rgba(122, 60, 255, 0.3),
+    0 0 15px rgba(122, 60, 255, 0.15);
+}
+
+/* HOVER EFFECT: Keeps the first letter perfectly unified with the row glow */
+.acrostic-row:hover .acrostic-letter {
+  font-size: 1.7rem; /* Slight scale up for pop effect */
+  color: #7a3cff;    /* Retains its distinctive purple color on hover */
+  text-shadow: 
+    0 0 10px rgba(122, 60, 255, 0.5),
+    0 0 20px rgba(122, 60, 255, 0.2);
 }
 
     .heart {
@@ -594,9 +593,6 @@
       100% { transform: scaleX(0); transform-origin: right center; opacity: 0.9; }
     }
 
-    /* ==========================================================================
-       CSS BLOSSOMING FLOWERS AT MAGICAL NIGHT (by Md Usman Ansari) INTEGRATION
-       ========================================================================== */
     #flowerGarden {
       position: fixed;
       inset: 0;
@@ -630,7 +626,6 @@
       background: rgba(255, 255, 255, 0.3);
     }
 
-    /* Absolute system container allowing flowers to bundle naturally */
     .flowers {
       position: absolute;
       width: 100%;
@@ -649,7 +644,6 @@
       transform-origin: bottom center;
     }
 
-    /* Dynamic custom animations for organic, randomized wind reactions */
     #flowerGarden.active .flower {
       animation: flowerSway var(--sway-duration, 4s) ease-in-out infinite alternate;
       animation-delay: var(--sway-delay, 0s);
@@ -667,18 +661,15 @@
       100% { transform: rotate(calc(var(--stem-curve) - var(--sway-amount))) scale(var(--scale, 1)); }
     }
 
-    /* Green Stems configured with custom skew matrix transformations to eliminate stick stiffness */
-    /* Green Stems configured with custom skew matrix transformations to eliminate stick stiffness */
     .flower__stem {
-      width: 8px; /* Slightly thicker for better curve visibility */
+      width: 8px; 
       height: 100%;
       background-image: linear-gradient(to top, #112d10, #1b4d18, #2e7d32, #4caf50);
-      /* This border-radius curves the stem slightly along its length */
       border-radius: 50% 50% 0 0 / 10% 10% 0 0; 
       transform: scaleY(0) skewX(var(--stem-skew, 0deg));
       transform-origin: bottom center;
       position: relative;
-      box-shadow: inset -2px 0 5px rgba(0, 0, 0, 0.3); /* Adds a 3D shadow effect */
+      box-shadow: inset -2px 0 5px rgba(0, 0, 0, 0.3); 
     }
 
     #flowerGarden.active .flower__stem {
@@ -689,7 +680,6 @@
       to { transform: scaleY(1) skewX(var(--stem-skew, 0deg)); }
     }
 
-    /* Leaves Construction on Stem */
     .flower__leaf {
       position: absolute;
       width: 45px;
@@ -719,14 +709,12 @@
       }
     }
 
-    /* HEAD CONTAINER: Placed at the exact top of the stem wrapper */
     .flower__head {
       position: absolute;
       top: 0;
       left: 50%;
       width: 0;
       height: 0;
-      /* Counteract the stem skew slightly so the head sits naturally upright relative to the bent top */
       transform: translate(-50%, 0) skewX(calc(-1 * var(--stem-skew, 0deg)));
       display: flex;
       align-items: center;
@@ -757,7 +745,6 @@
       to { box-shadow: 0 0 40px #ffaa00; }
     }
 
-    /* Petals Arrangement and Blossom Reveal */
     .flower__petals {
       position: absolute;
       width: 0;
@@ -773,7 +760,6 @@
       box-shadow: 0 0 15px rgba(122, 60, 255, 0.4);
     }
 
-    /* Dynamic blossoming animations when active */
     #flowerGarden.active .flower__petal--1 { animation: openPetal1 1.5s 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
     #flowerGarden.active .flower__petal--2 { animation: openPetal2 1.5s 1.9s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
     #flowerGarden.active .flower__petal--3 { animation: openPetal3 1.5s 2.0s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
@@ -791,7 +777,6 @@
     .flower--2 .flower__petal, .flower--5 .flower__petal { background-image: linear-gradient(to top, #9361ff, #f5e8ff); }
     .flower--3 .flower__petal, .flower--6 .flower__petal { background-image: linear-gradient(to top, #b084f5, #ffffff); }
 
-    /* Grass Layer System Container (Updated to Lush Green Colors) */
     .grass-container {
       position: absolute;
       bottom: 0;
@@ -814,25 +799,24 @@
     }
 
     .grass-blade {
-  width: 6px;
-  height: var(--blade-height, 40px);
-  background: var(--blade-color, linear-gradient(to top, #0c240a, #2e7d32));
-  border-radius: 50% 50% 0 0;
-  transform-origin: bottom center;
-  margin-left: -2px;
-  animation: grassWave var(--sway-duration, 3s) ease-in-out infinite;
-  animation-delay: var(--sway-delay, 0s);
-}
+      width: 6px;
+      height: var(--blade-height, 40px);
+      background: var(--blade-color, linear-gradient(to top, #0c240a, #2e7d32));
+      border-radius: 50% 50% 0 0;
+      transform-origin: bottom center;
+      margin-left: -2px;
+      animation: grassWave var(--sway-duration, 3s) ease-in-out infinite;
+      animation-delay: var(--sway-delay, 0s);
+    }
 
-@keyframes grassWave {
-  0%   { transform: rotate(var(--angle-start, -2deg)) skewX(-2deg) scaleY(1); }
-  25%  { transform: rotate(var(--angle-mid, 3deg)) skewX(2deg) scaleY(1.05); }
-  50%  { transform: rotate(var(--angle-end, -4deg)) skewX(-3deg) scaleY(1); }
-  75%  { transform: rotate(var(--angle-mid, 2deg)) skewX(1deg) scaleY(0.98); }
-  100% { transform: rotate(var(--angle-start, -2deg)) skewX(-2deg) scaleY(1); }
-}
+    @keyframes grassWave {
+      0%   { transform: rotate(var(--angle-start, -2deg)) skewX(-2deg) scaleY(1); }
+      25%  { transform: rotate(var(--angle-mid, 3deg)) skewX(2deg) scaleY(1.05); }
+      50%  { transform: rotate(var(--angle-end, -4deg)) skewX(-3deg) scaleY(1); }
+      75%  { transform: rotate(var(--angle-mid, 2deg)) skewX(1deg) scaleY(0.98); }
+      100% { transform: rotate(var(--angle-start, -2deg)) skewX(-2deg) scaleY(1); }
+    }
 
-    /* Dynamic Night Lights */
     .night-lights {
       position: absolute;
       width: 100%;
@@ -921,15 +905,15 @@
         </div>
 
         <div class="acrostic-container" id="acrosticContainer">
-  <div class="acrostic-row"><span class="acrostic-letter">D</span>ivine</div>
-  <div class="acrostic-row"><span class="acrostic-letter">E</span>ndearing</div>
-  <div class="acrostic-row"><span class="acrostic-letter">E</span>legance</div>
-  <div class="acrostic-row"><span class="acrostic-letter">P</span>recious</div>
-  <div class="acrostic-row"><span class="acrostic-letter">I</span>ntoxicating</div>
-  <div class="acrostic-row"><span class="acrostic-letter">K</span>ind-hearted</div>
-  <div class="acrostic-row"><span class="acrostic-letter">K</span>eeper</div>
-  <div class="acrostic-row"><span class="acrostic-letter">A</span>ngelic</div>
-</div>
+          <div class="acrostic-row"><span class="acrostic-letter">D</span>ivine</div>
+          <div class="acrostic-row"><span class="acrostic-letter">E</span>ndearing</div>
+          <div class="acrostic-row"><span class="acrostic-letter">E</span>legance</div>
+          <div class="acrostic-row"><span class="acrostic-letter">P</span>recious</div>
+          <div class="acrostic-row"><span class="acrostic-letter">I</span>ntoxicating</div>
+          <div class="acrostic-row"><span class="acrostic-letter">K</span>ind-hearted</div>
+          <div class="acrostic-row"><span class="acrostic-letter">K</span>eeper</div>
+          <div class="acrostic-row"><span class="acrostic-letter">A</span>ngelic</div>
+        </div>
       </div>
 
       <p>You perfectly live up to your name every day. 💜</p>
@@ -1140,7 +1124,6 @@
       document.getElementById("birthdayCard").classList.add("active");
     }
 
-    /* Background Aesthetic Loop Creators */
     function createHeart() {
       if(backgroundEffectsPaused) return;
       const heart = document.createElement("div");
@@ -1169,7 +1152,6 @@
     }
     setInterval(createSparkle, 800);
 
-    /* Media Logic */
     function toggleMusic() {
       const music = document.getElementById("bgMusic");
       const textSpan = document.getElementById("musicText");
@@ -1186,7 +1168,6 @@
       }
     }
 
-    /* Custom Input Cursor Coordinates tracking */
     const cursorPaw = document.getElementById("cursorPaw");
     let targetX = window.innerWidth / 2;
     let targetY = window.innerHeight / 2;
@@ -1212,7 +1193,6 @@
     }
     animatePaw();
 
-    /* Transition Core Controller Out of Opening Cake screen */
     let countdownValue = 3;
     const countdownElement = document.getElementById("countdown");
     const countdownScreen = document.getElementById("countdownScreen");
@@ -1249,9 +1229,6 @@
       }
     }, 1000);
 
-    /* ==========================================================================
-       TRANSITIONAL LOGIC FOR MAGICAL NIGHT GARDEN REVEAL
-       ========================================================================== */
     function revealGarden() {
       backgroundEffectsPaused = true;
       
@@ -1264,7 +1241,6 @@
       document.getElementById("mysteryBtn").style.opacity = "0";
       document.getElementById("mysteryBtn").style.pointerEvents = "none";
       
-      // Look here: Add the class to lift the button
       const musicBtn = document.getElementById("musicToggleBtn");
       musicBtn.classList.add("above-garden");
 
@@ -1278,14 +1254,12 @@
       document.getElementById("mysteryBtn").style.opacity = "1";
       document.getElementById("mysteryBtn").style.pointerEvents = "all";
       
-      // Look here: Remove the class to return it to its normal state
       const musicBtn = document.getElementById("musicToggleBtn");
       musicBtn.classList.remove("above-garden");
 
       backgroundEffectsPaused = false;
     }
 
-    // Generate Ambient Firefly/Light particles inside the flower garden dynamically
     const lightsContainer = document.getElementById("nightLightsContainer");
     for (let index = 0; index < 50; index++) {
       const light = document.createElement("div");
@@ -1298,33 +1272,28 @@
       lightsContainer.appendChild(light);
     }
 
-    // Generate dense realistic swaying Grass Blades dynamically along bottom landscape
     const grassContainer = document.getElementById("grassContainer");
-const bladeCount = Math.floor(window.innerWidth / 4);
+    const bladeCount = Math.floor(window.innerWidth / 4);
 
-for (let i = 0; i < bladeCount; i++) {
-  const blade = document.createElement("div");
-  blade.classList.add("grass-blade");
+    for (let i = 0; i < bladeCount; i++) {
+      const blade = document.createElement("div");
+      blade.classList.add("grass-blade");
 
-  // Random height
-  blade.style.setProperty("--blade-height", (28 + Math.random() * 25) + "px");
+      blade.style.setProperty("--blade-height", (28 + Math.random() * 25) + "px");
 
-  // Random color variation
-  blade.style.setProperty("--blade-color", Math.random() > 0.5 
-    ? "linear-gradient(to top, #11330e, #4caf50)" 
-    : "linear-gradient(to top, #0c240a, #2e7d32)");
+      blade.style.setProperty("--blade-color", Math.random() > 0.5 
+        ? "linear-gradient(to top, #11330e, #4caf50)" 
+        : "linear-gradient(to top, #0c240a, #2e7d32)");
 
-  // Random sway timing
-  blade.style.setProperty("--sway-duration", (2.5 + Math.random() * 2.5) + "s");
-  blade.style.setProperty("--sway-delay", (Math.random() * -3) + "s");
+      blade.style.setProperty("--sway-duration", (2.5 + Math.random() * 2.5) + "s");
+      blade.style.setProperty("--sway-delay", (Math.random() * -3) + "s");
 
-  // Random sway angles
-  blade.style.setProperty("--angle-start", (-2 - Math.random() * 3) + "deg");
-  blade.style.setProperty("--angle-mid", (2 + Math.random() * 3) + "deg");
-  blade.style.setProperty("--angle-end", (-3 - Math.random() * 4) + "deg");
+      blade.style.setProperty("--angle-start", (-2 - Math.random() * 3) + "deg");
+      blade.style.setProperty("--angle-mid", (2 + Math.random() * 3) + "deg");
+      blade.style.setProperty("--angle-end", (-3 - Math.random() * 4) + "deg");
 
-  grassContainer.appendChild(blade);
-}
+      grassContainer.appendChild(blade);
+    }
   </script>
 </body>
 </html>

@@ -298,46 +298,44 @@
   transform: scale(1);
 }
 
+/* 1. FIXED FADING: Changed base opacity to 1 so words are perfectly solid when revealed */
 .acrostic-row {
   font-size: 1.2rem;
   margin: 8px 0;
-  color: #555;
-  opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 0.7s ease-out, transform 0.15s ease-out, font-size 0s, font-weight 0s, color 0s, text-shadow 0s;
-  cursor: default;
+  color: #444444; /* Clean, solid dark grey/black base color */
+  opacity: 1; 
+  transform: translateY(0);
+  cursor: pointer;
+  /* 2. UNIFIED TIMING: Everything across the row transitions together over 0.25 seconds */
+  transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* 1. Turns the entire word into a bright, bold gold instantly on hover */
+/* Hover effect targets the entire line simultaneously */
 .acrostic-row:hover {
-  font-size: 1.35rem;      /* Enlarges the text */
-  font-weight: 900;        /* Extra bolded weight */
-  color: #ffd700;          /* Bright Vibrant Gold */
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #ffd700; /* Turns the whole word brilliant gold */
+  transform: translateX(10px);
   text-shadow: 
     0 0 10px rgba(255, 215, 0, 0.8),
-    0 0 20px rgba(255, 165, 0, 0.4); /* Glowing golden illumination */
-  transform: translateX(8px);
+    0 0 20px rgba(122, 60, 255, 0.4);
 }
 
-.acrostic-container.reveal .acrostic-row {
-  opacity: 1;
-  transform: translateY(0);
-}
-
+/* Base style for the leading capital letter */
 .acrostic-letter {
   font-size: 1.6rem;
   font-weight: 900;
-  color: #7a3cff;
+  color: #7a3cff; /* Vibrant purple signature */
   display: inline-block;
   width: 24px;
-  text-shadow: 0 0 10px rgba(122, 60, 255, 0.2);
-  transition: color 0s, text-shadow 0s, font-size 0.15s ease-out;
+  /* Matches the row's transition perfectly so they trigger together */
+  transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* 2. Forces the first capital letter to perfectly match the bright gold glow instantly */
+/* 3. SIMULTANEOUS ACTION: The first letter changes color instantly alongside the rest of the row */
 .acrostic-row:hover .acrostic-letter {
-  font-size: 1.8rem;       /* Scales up nicely with the rest of the word */
-  color: #fff3a3;          /* Ultra-bright white-gold center for a neon effect */
+  font-size: 1.8rem;
+  color: #fff3a3; /* White-gold core pops at the exact same time */
   text-shadow: 
     0 0 12px rgba(255, 243, 163, 1),
     0 0 25px rgba(255, 215, 0, 1);
@@ -923,15 +921,15 @@
         </div>
 
         <div class="acrostic-container" id="acrosticContainer">
-          <div class="acrostic-row" style="transition-delay: 0.3s;"><span class="acrostic-letter">D</span>ivine</div>
-          <div class="acrostic-row" style="transition-delay: 0.45s;"><span class="acrostic-letter">E</span>ndearing</div>
-          <div class="acrostic-row" style="transition-delay: 0.6s;"><span class="acrostic-letter">E</span>legance</div>
-          <div class="acrostic-row" style="transition-delay: 0.75s;"><span class="acrostic-letter">P</span>recious</div>
-          <div class="acrostic-row" style="transition-delay: 0.9s;"><span class="acrostic-letter">I</span>ntoxicating</div>
-          <div class="acrostic-row" style="transition-delay: 1.05s;"><span class="acrostic-letter">K</span>ind-hearted</div>
-          <div class="acrostic-row" style="transition-delay: 1.2s;"><span class="acrostic-letter">K</span>eeper</div>
-          <div class="acrostic-row" style="transition-delay: 1.35s;"><span class="acrostic-letter">A</span>ngelic</div>
-        </div>
+  <div class="acrostic-row"><span class="acrostic-letter">D</span>ivine</div>
+  <div class="acrostic-row"><span class="acrostic-letter">E</span>ndearing</div>
+  <div class="acrostic-row"><span class="acrostic-letter">E</span>legance</div>
+  <div class="acrostic-row"><span class="acrostic-letter">P</span>recious</div>
+  <div class="acrostic-row"><span class="acrostic-letter">I</span>ntoxicating</div>
+  <div class="acrostic-row"><span class="acrostic-letter">K</span>ind-hearted</div>
+  <div class="acrostic-row"><span class="acrostic-letter">K</span>eeper</div>
+  <div class="acrostic-row"><span class="acrostic-letter">A</span>ngelic</div>
+</div>
       </div>
 
       <p>You perfectly live up to your name every day. 💜</p>

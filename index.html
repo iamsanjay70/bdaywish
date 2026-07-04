@@ -874,11 +874,10 @@
   left: 50%;
   transform: translate(-50%, -50%) scale(0.92);
   z-index: 150;
-  width: 85%;
-  max-width: 420px;
+  width: 90%; /* Slightly expanded to safely host dynamically scaling items */
+  max-width: 520px; /* Enhanced max width ceiling */
   opacity: 0;
   visibility: hidden;
-  /* Swapped to a smooth timing function for opacity and transform */
   transition: opacity 2s ease-in-out, transform 2s cubic-bezier(0.34, 1.56, 0.64, 1), visibility 2s;
 }
 
@@ -893,7 +892,9 @@
       display: block !important;
       opacity: 1 !important;
       width: 100%;
+      min-height: auto; /* Dynamic height adjustment */
       box-sizing: border-box;
+      padding: 35px 30px; /* Comfortable packing without creating unnecessary empty space */
     }
 
     .proposal-btns {
@@ -903,6 +904,7 @@
       margin-top: 25px;
       position: relative;
       align-items: center;
+      flex-wrap: wrap; /* Allows wrap gracefully if Yes becomes extremely wide */
     }
 
     #yes-btn {
@@ -913,13 +915,13 @@
 
     #yes-btn:hover {
       background-color: #27ae60;
-      transform: scale(1.05);
     }
 
     #no-btn {
       background-color: #e74c3c;
       color: white;
       position: relative;
+      white-space: nowrap; /* CRITICAL: Stops the inner strings from ever breaking/wrapping */
     }
 
     #no-btn:hover {
@@ -1068,7 +1070,7 @@
           <div class="cute-container">
              <img id="display-gif" src="cropped_circle_image.png" alt="Cute pic">
           </div>
-          <h1 id="question-text">Will you go out with me? 🌹</h1>
+          <h1 id="question-text" style="transition: margin 0.3s ease;">Will you go out with me? 🌹</h1>
           <div class="proposal-btns">
             <button id="yes-btn" class="btn">Yepyepyep!</button>
             <button id="no-btn" class="btn">HELL NAHH!</button>
@@ -1437,6 +1439,7 @@
       noBtn.innerText = "No";
       textIndex = 0;
       noBtn.classList.remove('hidden');
+      document.getElementById("question-text").style.marginTop = "12px";
 
       backgroundEffectsPaused = false;
     }
@@ -1499,32 +1502,39 @@
 
     // When "No" is clicked, make Yes bigger, No smaller, and change text
     noBtn.addEventListener('click', () => {
-        // Make "Yes" button progressively larger
-        yesScale += 0.4;
-        yesBtn.style.transform = `scale(${yesScale})`;
+        // Safe-cap "Yes" button size limit to prevent overflowing out of cards
+        if (yesScale < 1.8) {
+            yesScale += 0.2;
+            yesBtn.style.transform = `scale(${yesScale})`;
+        }
         
-        // Make "No" button smaller
-        noScale -= 0.1;
-        noBtn.style.transform = `scale(${noScale})`;
+        // Safe-cap "No" button scale limit so text is perfectly legible inside
+        if (noScale > 0.65) {
+            noScale -= 0.07;
+            noBtn.style.transform = `scale(${noScale})`;
+        }
         
         // Cycle through funny/sad prompt strings
         noBtn.innerText = noTexts[textIndex];
         textIndex = (textIndex + 1) % noTexts.length;
 
+        // Push layout spacing dynamically when elements inflate to prevent clipping headers
+        if(yesScale >= 1.4) {
+             document.getElementById("question-text").style.marginTop = "35px";
+        }
+
         // Randomly move the no button slightly so they have to chase it
-        const randomX = Math.floor(Math.random() * 40) - 20; 
-        const randomY = Math.floor(Math.random() * 40) - 20;
+        const randomX = Math.floor(Math.random() * 30) - 15; 
+        const randomY = Math.floor(Math.random() * 30) - 15;
         noBtn.style.left = `${randomX}px`;
         noBtn.style.top = `${randomY}px`;
 
-        // If No shrinks to almost nothing, force hide it
-        if(noScale <= 0.3) {
+        // Let it vanish playfully after rolling all strings
+        if(textIndex === 0 && yesScale >= 1.6) {
             noBtn.classList.add('hidden');
         }
     });
 
-    // When "Yes" is clicked, show the happy celebration view
-    // When "Yes" is clicked, show celebration view + Confetti + Flower Burst
     // When "Yes" is clicked, show celebration view + Confetti + Flower Burst from Screen Center
     yesBtn.addEventListener('click', () => {
         questionScreen.classList.add('hidden');
@@ -1583,7 +1593,7 @@
 
           document.body.appendChild(flower);
 
-          // Matches the 6-second CSS animation loop perfectly
+          // Matches the 4-second CSS animation loop perfectly
           setTimeout(() => {
             flower.remove();
           }, 6000);

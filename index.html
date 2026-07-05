@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Happy Birthday</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300..700;1,300..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
   <style>
     body {
       min-height: 100vh;
@@ -12,7 +15,7 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      font-family: 'Trebuchet MS', sans-serif;
+      font-family: 'Nunito', sans-serif;
       margin: 0;
       transition: background 1.5s ease;
     }
@@ -313,7 +316,7 @@
   transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* Trigger the domino slide-up animation when the container gets the .reveal classssss */
+/* Trigger the domino slide-up animation when the container gets the .reveal class */
 .acrostic-container.reveal .acrostic-row {
   animation: dominoReveal 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
@@ -1009,7 +1012,7 @@
   <div class="main-wrapper" id="mainWrapper">
     <div class="card active" id="birthdayCard">
       <h1>Happy Birthday, Deepikka 🥳</h1>
-      <h2>You make every moment brighter</h2>
+      <h2>You make every moment brighter🌟💫</h2>
 
       <p>
         Wishing you a day filled with <span class="highlight">happiness, laughter, and love</span>.
@@ -1599,10 +1602,10 @@
 
           document.body.appendChild(flower);
 
-          // Matches the 6-second CSS animation loop perfectly
+          // Matches the 4-second CSS animation loop perfectly
           setTimeout(() => {
             flower.remove();
-          }, 6001);
+          }, 6000);
         }
     });
   </script>

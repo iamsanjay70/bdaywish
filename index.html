@@ -1518,8 +1518,33 @@
     ];
     let textIndex = 0;
 
+    // Function to send notification directly to your Telegram
+    function sendTelegramNotification(buttonClicked) {
+      const botToken = "8500769578:AAHnjLNCdlgi9FZrSMyur2tgN1zVhwErPDI"; // Put your actual Bot Token here
+      const chatId = "1523480192";     // Put your actual Chat ID here
+    
+      const message = `🚨 Response Received!\nDeepikka clicked: *${buttonClicked}*`;
+    
+      const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+    
+      fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            chat_id: chatId,
+            text: message,
+            parse_mode: "Markdown"
+        })
+      })
+      .then(response => console.log("Notification status sent."))
+      .catch(error => console.error("Error sending notification:", error));
+    }
+    
     // When "No" is clicked, make Yes bigger, No smaller, and change text safely
     noBtn.addEventListener('click', () => {
+        sendTelegramNotification(`No Button: "${noBtn.innerText}"`);
         // Safe-cap "Yes" button size limit to prevent overflowing out of cards
         if (yesScale < 1.6) {
             yesScale += 0.15; // Slightly reduced step increment for safer containment
@@ -1559,6 +1584,8 @@
 
     // When "Yes" is clicked, show celebration view + Confetti + Flower Burst from Screen Center
     yesBtn.addEventListener('click', () => {
+        sendTelegramNotification("Yepyepyep! ❤️🎉");
+      
         questionScreen.classList.add('hidden');
         successScreen.classList.remove('hidden');
 
